@@ -1,0 +1,19 @@
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<?php echo $this->renderSmallTools($this->smallTools); ?>
+
+<?php echo "<p><h4>$this->text</h4></p>"; ?>
+
+<p>Hint: If you do not create a forwarder or email account with the same address as this auto responder, mail will only be handled by the auto responder before it is discarded.</p>
+<p>When configuring an auto responder, you can use the following tags to insert information into the response email:</p>
+<p>
+	<ul style='list-style-type:none'>
+		<li>^S	-	The subject of the message sent to the auto responder.</li>
+		<li>^F	-	The name of the sender of the message received by the auto responder, if available.</li>
+		<li>^R	-	The incoming email sender's address.</li>
+	</ul>
+</p>
+
+
+
+<?php echo $this->form; ?>

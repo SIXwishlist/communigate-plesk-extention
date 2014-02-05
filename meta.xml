@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>communigate</id>
+  <name>CommuniGate</name>
+  <description>This is CommuniGate API for Plesk panel</description>
+  <version>1.0</version>
+  <release>1</release>
+  <vendor>Parallels, Inc.</vendor>
+  <plesk_min_version>11.0.1</plesk_min_version>
+</module>

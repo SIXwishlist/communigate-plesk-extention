@@ -1,0 +1,11 @@
+Installation Instructions:
+
+In order to install this extention you need to perform the following steps:
+
+1. Log in to Plesk Panel as administrator.
+2. Go to Server Management > Extensions (in the left navigation menu).
+3. Click the 'Add Extention' button, then click on 'Choose File' and
+   and navigate to the where you downloaded the communigate-plesk-extension.zip file.
+4. Click on 'OK' and the extention will be installed on your Plesk Panel.
+
+

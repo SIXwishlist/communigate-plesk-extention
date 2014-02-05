@@ -1,0 +1,8 @@
+<?php echo $this->renderTabs($this->tabs); ?>
+<?php echo $this->renderSmallTools($this->smallTools); ?>
+<?php echo "<p><h4>$this->text</h4></p>"; ?>
+<p class='description'>
+	Forwarders allow you to send a copy of all mail from one email address to another. For example, if you have two different email accounts, joe@example.com and joseph@example.com, you could forward joe@example.com to joseph@example.com so that you do not need to check both accounts. Note that the forwarded mail will still be delivered to the original address as well.
+</p>
+<?php echo $this->renderList($this->list); ?>
+<?php echo $this->button; ?>

@@ -1,0 +1,34 @@
+@import url('datepickr.css');
+/*Removing the scrolls in the iframe*/
+iframe{
+	overflow: hidden;
+}
+/*setting icons*/
+.accounts span {
+	background-image: url(/modules/communigate/images/cgpro_manageaccounts.png)!important;
+}
+.aliases span {
+	background-image: url(/modules/communigate/images/cgpro_userfiltering.png)!important;
+}
+.connection-assistent span {
+	background-image: url(/modules/communigate/images/cgpro_pronto.png)!important; 
+}
+.im span { 
+	background-image: url(/modules/communigate/images/cgpro_jabber.png)!important; 
+}
+.default-addresses span {
+	background-image: url(/modules/communigate/images/cgpro_defaultemailacct.png)!important; 
+}
+.dkim span { 
+	background-image: url(/modules/communigate/images/cgpro_mailverify.png)!important; 
+}
+.forwarders span {
+	background-image: url(/modules/communigate/images/cgpro_forwardersemail.png)!important;
+}
+.auto-responders span {
+	background-image: url(/modules/communigate/images/cgpro_responder.png)!important;
+}
+
+.description {
+	width: 720px;
+}
