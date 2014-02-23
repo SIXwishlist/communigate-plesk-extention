@@ -1,0 +1,13 @@
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<?php echo $this->renderSmallTools($this->smallTools); ?>
+
+<h4>Email Archiving</h4>
+<br>
+<p style="width: 700px">Email Archiving allows you to store a copy of each incoming and outgoing message
+ that is sent to or from a domain on your account. The archives are stored in an 
+ uncompressed maildir format so they can be browsed via an IMAP connection. 
+ Be aware that archiving email can consume disk space quickly, and you should ensure you have enough
+ disk space available for the retention period you select.</p>
+<br>
+<?php echo $this->form; ?>
