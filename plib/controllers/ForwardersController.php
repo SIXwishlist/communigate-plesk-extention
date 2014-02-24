@@ -16,6 +16,8 @@ class ForwardersController extends pm_Controller_Action
 
         $mailingList = $this->_helper->url("index", "list");
         $accounts = $this->_helper->url("list-Accounts", "index");
+        $mailArchiving = $this->_helper->url("email-Archiving", "index");
+        $group = $this->_helper->url("index", "group");
 
         // Init tabs for all actions
         $this->view->tabs = array(
@@ -26,6 +28,14 @@ class ForwardersController extends pm_Controller_Action
             array(
                 'title' => 'Mailing Lists',
                 'link' => $mailingList,
+                ),
+            array(
+                'title' => 'Email Archiving',
+                'link' => $mailArchiving,
+                ),
+            array(
+                'title' => 'Group',
+                'link' => $group,
                 ),
             );
     }

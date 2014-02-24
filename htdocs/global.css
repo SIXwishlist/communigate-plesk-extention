@@ -32,3 +32,9 @@ iframe{
 .description {
 	width: 720px;
 }
+
+#addMemberToGroup {
+	position:relative;
+	left: 360px;
+	top: -28px;
+}

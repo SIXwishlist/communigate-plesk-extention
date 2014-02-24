@@ -11,5 +11,7 @@ $cli = new Modules_Example_CLI_CLI();
 $cli->setDebug(1);
 $cli->Login($host,$port,$login,$password);
 
+        $members = $cli->GetGroup('support@abc.bg');
+        print_r($members['Members']) ;
 
 ?>

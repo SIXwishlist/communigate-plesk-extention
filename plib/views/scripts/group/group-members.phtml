@@ -1,0 +1,9 @@
+<?php echo $this->renderTabs($this->tabs); ?>
+<?php echo $this->renderSmallTools($this->smallTools); ?>
+<?php echo "<p><h4>$this->heading</h4></p>"; ?>
+<p>In this page you define all group members by their full email addresses.</p>
+<h4>Add a new group member</h4>
+<?php echo $this->form; ?>
+<h4>Current group members :</h4>
+<?php echo $this->renderList($this->list); ?>
+<?php echo $this->button; ?>
