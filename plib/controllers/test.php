@@ -11,7 +11,7 @@ $cli = new Modules_Example_CLI_CLI();
 $cli->setDebug(1);
 $cli->Login($host,$port,$login,$password);
 
-        $members = $cli->GetGroup('support@abc.bg');
-        print_r($members['Members']) ;
+$info = $cli->GetAccountRPOP('misho@communigate-aps.com');
+var_dump($info);
 
 ?>

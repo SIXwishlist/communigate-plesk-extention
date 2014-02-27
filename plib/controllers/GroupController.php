@@ -18,6 +18,7 @@ class GroupController extends pm_Controller_Action
         $accounts = $this->_helper->url("list-Accounts", "index");
         $mailArchiving = $this->_helper->url("email-Archiving", "index");
         $group = $this->_helper->url("index", "group");
+        $remotePop = $this->_helper->url("index", "remote-Pop");
 
         // Init tabs for all actions
         $this->view->tabs = array(
@@ -37,6 +38,10 @@ class GroupController extends pm_Controller_Action
                 'title' => 'Group',
                 'link' => $group,
                 ),
+            array(
+                'title' => 'Remote POP',
+                'link' => $remotePop,
+                ),
             );
     }
 
@@ -48,15 +53,12 @@ class GroupController extends pm_Controller_Action
 
     /*
     *************** 
-    * this action is for listing forwadrers and operations
+    * this action is for listing groups and operations
     ***************
     */
     public function listGroupAction()
     {
-        $smallTools = $this->_getSmallTools();
-
-        $this->view->smallTools = $smallTools; 
-        
+         
         $list = $this->_getListGroups();
 
         $button = "<a href=".$this->_helper->url("create", "group")." class=\"btn\">Create Group</a>";
@@ -79,10 +81,6 @@ class GroupController extends pm_Controller_Action
         $this->view->text = 'Add a New Group';
 
         $form = new Modules_Communigate_Form_CreateGroup(); 
-
-        $smallTools = $this->_getSmallTools();
-
-        $this->view->smallTools = $smallTools;
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $form->process();
@@ -108,7 +106,7 @@ class GroupController extends pm_Controller_Action
 
     /*
     *************** 
-    * this action is for deleting group
+    * this action is for deleting a group member
     ***************
     */
     public function deleteMemberAction()
@@ -121,17 +119,17 @@ class GroupController extends pm_Controller_Action
         $this->_helper->redirector("group-Members", "group",'', $params);
     }
 
-
+    /*
+    *************** 
+    * this action is for renaming a group
+    ***************
+    */
     public function renameAction()
     {
         $this->view->text = 'Rename Group';
 
         $form = new Modules_Communigate_Form_RenameGroup();
         $group = $this->_getParam('group');
-
-        $smallTools = $this->_getSmallTools();
-
-        $this->view->smallTools = $smallTools;
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $form->process($group);
@@ -140,18 +138,18 @@ class GroupController extends pm_Controller_Action
         };
         $this->view->form = $form;
     }
-
-    public function settingsAction()
+    
+    /*
+    *************** 
+    * this action is for changing the settings of a group
+    ***************
+    */    public function settingsAction()
     {
         $this->view->text = 'Group Settings';
 
         $form = new Modules_Communigate_Form_GroupSettings();
         
         $group = $this->_getParam('group');
-
-        $smallTools = $this->_getSmallTools();
-
-        $this->view->smallTools = $smallTools;
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $form->process($group);
@@ -161,6 +159,12 @@ class GroupController extends pm_Controller_Action
         $this->view->form = $form; 
     }
 
+    /*
+    *************** 
+    * this action is for viewing group members
+    * and adding new ones
+    ***************
+    */
     public function groupMembersAction()
     {
         
@@ -173,10 +177,6 @@ class GroupController extends pm_Controller_Action
             $this->_helper->json(array('redirect' => $this->_helper->url("group-Members", "group",'', $params)));
         };
         $this->view->form = $form;
-
-        $smallTools = $this->_getSmallTools();
-
-        $this->view->smallTools = $smallTools; 
 
         $list = $this->_getListMembers($group);
 
@@ -240,6 +240,11 @@ class GroupController extends pm_Controller_Action
       return $list;
     }
 
+    /*
+    *************** 
+    * helper method to create the list of group members
+    ***************
+    */
     private function _getListMembers($groupe)
     {
         $request = new Zend_Controller_Request_Http();
@@ -275,65 +280,6 @@ class GroupController extends pm_Controller_Action
       $list->setDataUrl(array('action' => 'list-data'));
 
       return $list;
-    }
-
-    public function _getSmallTools()
-    {
-        $smallTools = array(
-            array(
-                'title' => 'Accounts',
-                'description' => 'Example module with UI samples',
-                'class' => 'accounts',
-                'link' => $this->_helper->url("list-Accounts", "index"),
-                ),
-            array(
-                'title' => 'Aliases',
-                'description' => 'Example module with UI samples',
-                'class' => 'aliases',
-                'link' => $this->_helper->url("list-Aliases", "index"),
-                ),
-            array(
-                'title' => 'Default Addresses',
-                'description' => 'Example module with UI samples',
-                'class' => 'default-addresses',
-                'link' => $this->_helper->url("default-Addresses", "index"),
-                ),
-            array(
-                'title' => 'Forwarders',
-                'description' => 'Example module with UI samples',
-                'class' => 'forwarders',
-                'link' => $this->_helper->url("index", "forwarders"),
-                ),
-            array(
-                'title' => 'Auto Responders',
-                'description' => 'Example module with UI samples',
-                'class' => 'auto-responders',
-                        // 'action' => 'default-Addresses'
-                'link' => $this->_helper->url("index", "auto-responders"),
-                ),
-
-            ); 
-
-	    $client = pm_Session::getClient();
-
-	    if ($client->isAdmin()) {
-
-	        array_push($smallTools, array(
-	            'title' => 'Change Domain',
-	            'description' => 'Modules installed in the Panel',
-	            'class' => 'sb-suspend',
-	            'link' => pm_Context::getBaseUrl(),
-	            ));
-
-	        array_push($smallTools, array(
-
-	            'title' => 'Account Types',
-	            'description' => 'Modules installed in the Panel',
-	            'class' => 'sb-suspend',
-	            'action' => 'set-Types',
-	            ));
-	    }
-	    return $smallTools;
     }
 
     /*

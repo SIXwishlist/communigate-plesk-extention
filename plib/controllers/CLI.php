@@ -597,7 +597,7 @@
         function GetAccountRPOP($accountName) {
             if($accountName == '')
                 die('usage: $cli->GetAccountRPOP(string $accountName)'."\n");
-            $this->send('GetAccountRPOP '.$accountName);
+            $this->send('GetAccountRPOPs '.$accountName);
             $this->_parseResponse();
             if($this->isSuccess()) {
                 return $this->parseWords($this->getWords());
@@ -607,7 +607,7 @@
         function SetAccountRPOP($accountName,$details) {
             if($accountName == '' || !is_array($details))
                 die('usage: $cli->SetAccountRPOP(string $accountName, array $details)'."\n");
-            $this->send('SetAccountRPOP '.$accountName.' '.$this->printWords($details));
+            $this->send('SetAccountRPOPS '.$accountName.' '.$this->printWords($details));
             $this->_parseResponse();
         }
 

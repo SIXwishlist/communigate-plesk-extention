@@ -72,5 +72,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
             });
         };
 
-    };
+        var accountDropdown = document.getElementById('accountDropdown');
+        if (accountDropdown !== null) {
+            (accountDropdown.onchange = function (argument) {
+                var account = $("accountDropdown").getValue();
+                if (account !== 'Please Choose') {
+                    window.location = '/modules/communigate/index.php/remote-Pop/index/account/' + account;
+                } else{};
+            })();
+        }; 
+
+};
 });

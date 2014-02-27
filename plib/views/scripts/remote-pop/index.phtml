@@ -1,0 +1,26 @@
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<?php
+if (isset($this->text)) {
+	echo "<p><h4>$this->text</h4></p>
+</br>";
+} else {
+	echo '<h4>Remote POP</h4></br>';
+}
+?>
+
+<?php echo $this->form; ?>
+
+</br>
+
+<?php if (isset($this->button)) {
+	echo $this->button;
+} ?>
+
+</br>
+
+<?php
+if (isset($this->list)) {
+	echo $this->renderList($this->list);
+}
+?>
