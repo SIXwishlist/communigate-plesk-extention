@@ -19,6 +19,7 @@ class GroupController extends pm_Controller_Action
         $mailArchiving = $this->_helper->url("email-Archiving", "index");
         $group = $this->_helper->url("index", "group");
         $remotePop = $this->_helper->url("index", "remote-Pop");
+        $filter = $this->_helper->url("index", "filter");
 
         // Init tabs for all actions
         $this->view->tabs = array(
@@ -41,6 +42,10 @@ class GroupController extends pm_Controller_Action
             array(
                 'title' => 'Remote POP',
                 'link' => $remotePop,
+                ),
+            array(
+                'title' => 'User Level Filtering',
+                'link' => $filter,
                 ),
             );
     }

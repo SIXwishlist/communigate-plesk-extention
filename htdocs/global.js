@@ -82,5 +82,109 @@ document.addEventListener("DOMContentLoaded", function(event) {
             })();
         }; 
 
-};
+        var i = 1;
+        if ($('btn-addFilter') !== null) {
+            $('btn-addFilter').addClassName('addFilterClass');
+            $('btn-removeFilter').addClassName('removeFilterClass');
+            $('parameterFilter-form-row').addClassName('zeroHeight');
+            $('btn-addFilter').observe('click', duplicateFormFields);
+        };
+
+        function duplicateFormFields (event) {
+            var htmlForData = $('dataFilter-form-row').innerHTML.replace('Rules', '');
+            htmlForData = htmlForData.replace(/dataFilter/g , 'dataFilter_' + i);
+            
+            var htmlForOperation = $('oprationFilter-form-row').innerHTML;
+            htmlForOperation = htmlForOperation.replace(/oprationFilter/g, 'oprationFilter_' + i);
+            
+            var htmlForParameter = $('parameterFilter-form-row').innerHTML;
+            htmlForParameter = htmlForParameter.replace(/parameterFilter/g, 'parameterFilter_' + i); 
+
+            var htmlForAddFilterButton = $('btn-addFilter').innerHTML;
+            htmlForRemoveFilterButton = $('btn-removeFilter').innerHTML;
+
+            var dataFilterElement = new Element('div', {'class': 'form-row', id: 'dataFilter-form-row_' + i}).update(htmlForData);
+            var operationFilterElement = new Element('div', {'class': 'form-row', id: 'oprationFilter-form-row_' + i}).update(htmlForOperation);
+            var parameterFilterElement = new Element('div', {'class': 'form-row zeroHeight', id: 'parameterFilter-form-row_' + i}).update(htmlForParameter);
+            var addFilterElement = new Element('span', {'class': 'btn addFilterClass', id: 'btn-addFilter_' + i}).update(htmlForAddFilterButton);
+            var removeFilterElement = new Element('span', {'class': 'btn removeFilterClass', id: 'btn-removeFilter_' + i}).update(htmlForRemoveFilterButton);
+
+            addFilterElement.observe('click', duplicateFormFields);
+            removeFilterElement.observe('click', removeFormFields);
+
+            if (i == 1) {
+                $('btn-removeFilter').insert({after: dataFilterElement});
+                $('dataFilter-form-row_' + i).insert({after: operationFilterElement});
+                $('oprationFilter-form-row_' + i).insert({after: parameterFilterElement});
+                $('parameterFilter-form-row_' + i).insert({after: addFilterElement})
+                $('btn-addFilter_' + i).insert({after: removeFilterElement});
+            } else{
+                $('btn-removeFilter_' + (i - 1)).insert({after: dataFilterElement});
+                $('dataFilter-form-row_' + i).insert({after: operationFilterElement});
+                $('oprationFilter-form-row_' + i).insert({after: parameterFilterElement});
+                $('parameterFilter-form-row_' + i).insert({after: addFilterElement})
+                $('btn-addFilter_' + i).insert({after: removeFilterElement});
+            };
+            i++;
+        }
+
+        function removeFormFields (event) {
+            var elementID = this.readAttribute('id');
+            var elementToRemove = $$("[id$=" + elementID.slice(-2) + ']')
+            elementToRemove
+            for (var j = 0; j < elementToRemove.length; j++) {
+                elementToRemove[j].remove();
+            };        
+            i--;
+        }
+
+        if ($('btn-addAction') !== null) {
+            $('actionParameter-form-row').addClassName('zeroHeight');
+            $('btn-addAction').observe('click', duplicateFields);
+        };
+
+        var counter = 1;
+        function duplicateFields (event) {
+            var htmlForActionFilter = $('actionFilter-form-row').innerHTML.replace('Actions', '');
+            htmlForActionFilter = htmlForActionFilter.replace(/actionFilter/g , 'actionFilter_' + counter);
+            
+            var htmlForActionOperation = $('actionParameter-form-row').innerHTML;
+            htmlForActionOperation = htmlForActionOperation.replace(/actionParameter/g, 'actionParameter_' + counter);
+
+            var htmlForAddActionButton = $('btn-addAction').innerHTML;
+            htmlForRemoveActionButton = $('btn-removeAction').innerHTML;
+
+            var actionFilterElement = new Element('div', {'class': 'form-row', id: 'actionFilter-form-row_' + counter}).update(htmlForActionFilter);
+            var operationActionElement = new Element('div', {'class': 'form-row zeroHeight', id: 'actionParameter-form-row_' + counter}).update(htmlForActionOperation);
+            var addActionElement = new Element('span', {'class': 'btn addActionClass', id: 'btn-addAction_' + counter}).update(htmlForAddActionButton);
+            var removeActionElement = new Element('span', {'class': 'btn removeActionClass', id: 'btn-removeAction_' + counter}).update(htmlForRemoveActionButton);
+
+            addActionElement.observe('click', duplicateFields);
+            removeActionElement.observe('click', removeFields);
+
+            if (counter == 1) {
+                $('btn-removeAction').insert({after: actionFilterElement});
+                $('actionFilter-form-row_' + counter).insert({after: operationActionElement});
+                $('actionParameter-form-row_' + counter).insert({after: addActionElement});
+                $('btn-addAction_' + counter).insert({after: removeActionElement});
+            } else{
+                $('btn-removeAction_' + (counter - 1)).insert({after: actionFilterElement});
+                $('actionFilter-form-row_' + counter).insert({after: operationActionElement});
+                $('actionParameter-form-row_' + counter).insert({after: addActionElement});
+                $('btn-addAction_' + counter).insert({after: removeActionElement});
+            };
+            counter++;
+        }
+
+        function removeFields (event) {
+            var element = this.readAttribute('id');
+            var elementTo = $$("[id$=" + element.slice(-2) + ']')
+            elementTo
+            for (var p = 0; p < elementTo.length; p++) {
+                elementTo[p].remove();
+            };        
+            counter--;
+        }
+
+    };
 });

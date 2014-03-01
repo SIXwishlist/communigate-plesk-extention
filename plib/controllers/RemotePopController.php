@@ -19,6 +19,7 @@ class RemotePopController extends pm_Controller_Action
         $mailArchiving = $this->_helper->url("email-Archiving", "index");
         $group = $this->_helper->url("index", "group");
         $remotePop = $this->_helper->url("index", "remote-Pop");
+        $filter = $this->_helper->url("index", "filter");
 
         // Init tabs for all actions
         $this->view->tabs = array(
@@ -42,6 +43,10 @@ class RemotePopController extends pm_Controller_Action
                 'title' => 'Remote POP',
                 'link' => $remotePop,
                 ),
+            array(
+                'title' => 'User Level Filtering',
+                'link' => $filter,
+                ),
             );
     }
 
@@ -50,7 +55,6 @@ class RemotePopController extends pm_Controller_Action
         $form = new Modules_Communigate_Form_SelectAccount();
 
         $account = $this->_getParam('account');
-
         if (isset($account)) {
 
             $button = "<a href=".$this->_helper->url("create", "remote-Pop" ,'' , array('account' => $account))." class=\"btn\">Add Remote POP</a>";

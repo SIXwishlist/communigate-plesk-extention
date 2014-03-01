@@ -39,3 +39,53 @@ iframe{
 	top: -28px;
 }
 
+.posRight {
+	position: relative;
+	left: 204px;
+	top: -30px;
+	width: 200px;
+}
+.changeWidth {
+	width: 200px;
+}
+
+.posDown{
+	position: relative;
+	left: 0px;
+	top: -30px;
+	width: 400px;
+}
+.addFilterClass {
+	position: relative;
+	left: 425px;
+	top: -45px;
+	min-width: 30px;
+}
+.removeFilterClass {
+	position: relative;
+	left: 420px;
+	top: -45px;
+	min-width: 30px;
+}
+
+.addActionClass {
+	position: relative;
+	left: 425px;
+	top: -30px;
+	min-width: 30px;
+}
+.removeActionClass {
+	position: relative;
+	left: 420px;
+	top: -30px;
+	min-width: 30px;
+}
+button[name="addFilter"], button[name="removeFilter"],button[name="addAction"],button[name="removeAction"] {
+	min-width: 30px;
+}
+.zeroHeight{
+	height: 0px;
+}
+.prioritClass{
+	width: 100px;
+}
