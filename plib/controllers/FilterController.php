@@ -50,6 +50,11 @@ class FilterController extends pm_Controller_Action
             );
     }
 
+    /*
+    *************** 
+    * this action is for displaying all the accounts
+    ***************
+    */
     public function indexAction() 
     {
         $this->view->heading = 'Manage Filters';
@@ -59,9 +64,13 @@ class FilterController extends pm_Controller_Action
         $list = $this->_getListAccounts();
         
         $this->view->list = $list;
-
     }
 
+    /*
+    *************** 
+    * this action is for displaying filters and managing them
+    ***************
+    */
     public function manageFiltersAction()
     {
         $account = $this->_getParam('account');
@@ -97,35 +106,9 @@ class FilterController extends pm_Controller_Action
         $account = $this->_getParam('account');
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-            foreach ($_POST as $key => $value) {
-                if ($this->startsWith($key, 'dataFilter')) {
-                    $data[] = $value;
-                } elseif ($this->startsWith($key, 'oprationFilter')) {
-                    $operations[] = $value;
-                } elseif ($this->startsWith($key, 'parameterFilter')) {
-                    $parameters[] = $value; 
-                } elseif ($this->startsWith($key, 'actionFilter')) {
-                    $actions[] = $value;
-                } elseif ($this->startsWith($key, 'actionParameter')) {
-                    $parametersActions[] = $value;
-                }
-            }
 
-            for ($i=0; $i < count($data); $i++) { 
-               $ruleSettings[] = array($data[$i], $operations[$i], $parameters[$i]);
-            }
-
-            for ($i=0; $i < count($actions); $i++) { 
-               $actionsForRules[] = array($actions[$i], $parametersActions[$i]);
-            }
-
-            $answer = array($_POST['priority'], $_POST['name'], $ruleSettings, $actionsForRules);
-            $cli = Modules_Communigate_Custom_Accounts::ConnectToCG();
-
-            $rules = $cli->GetAccountRules($account);
-            array_push($rules, $answer);
-
-            $cli->SetAccountRules($account, $rules);
+            $filterObj = new Modules_Communigate_Custom_Filters();
+            $filterObj->createFilter($_POST, $account);
 
             // $form->process();
             $this->_status->addMessage('info', 'Filter succesfully added!');
@@ -138,42 +121,61 @@ class FilterController extends pm_Controller_Action
 
     /*
     *************** 
-    * this action is for deleting Rules
+    * this action is for deleting Filters
     ***************
     */
     public function deleteAction()
     {
-        $name = $this->_getParam('name');
+        $filter = $this->_getParam('filter');
         $account = $this->_getParam('account');
-        $pop = new Modules_Communigate_Custom_RemotePop;
-        $pop->deleteRemotePop($name, $account);
+        $filterObj = new Modules_Communigate_Custom_Filters();
+        $filterObj->deleteFilter($filter, $account);
 
-        $this->_status->addMessage('info', "Remote POP $name was succesfully deleted!");
+        $this->_status->addMessage('info', 'Filter succesfully deleted!');
         $params = array('account' => $account);
-        $this->_helper->redirector('index', 'remote-Pop','', $params);
+        $this->_helper->redirector("manage-Filters", "filter",'', $params);
     }
 
-
-
-
-    /**
-     * Action for editing Rules
-     */
-    public function editAction()
+    /*
+    *************** 
+    * this action is for updating Filters
+    ***************
+    */
+    public function updateAction()
     {
-        $this->view->text = 'View/Edit Remote POP';
+        $account = $this->_getParam('account');
 
-        $form = new Modules_Communigate_Form_AddPop(); 
+        $filter = $this->_getParam('filter');
+
+        $this->view->heading = "Edit a Filter for $account";
+
+        $this->view->text = 'Please edit the filter below. You can add multiple rules to match subjects, addresses, or other parts of the message. You can then add multiple actions to take on a message such as to deliver the message to a different address and then discard it.';
+
+        $cli = Modules_Communigate_Custom_Accounts::ConnectToCG();
+        $filters = $cli->GetAccountRules($account);
+
+        foreach ($filters as $filterName) {
+            if ($filterName[1] == $filter) {
+                $filterInfo = $filterName;
+            }
+        }
+
+        $this->view->filter = $filterInfo;
+
+        $form = new Modules_Communigate_Form_CreateFilter();
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-            $form->process();
-            $this->_status->addMessage('info', 'Remote POP succesfully added!');
-            $account = $this->_getParam('account');
-            $params = array('account' => $account);
-            $this->_helper->json(array('redirect' => $this->_helper->url("index", "remote-Pop",'', $params)));
-        };
-        $this->view->form = $form;
 
+            $filterObj = new Modules_Communigate_Custom_Filters();
+            $filterObj->deleteFilter($filter, $account);
+            $filterObj->createFilter($_POST, $account);
+
+            $this->_status->addMessage('info', 'Filter succesfully updated!');
+            $params = array('account' => $account);
+            $this->_helper->json(array('redirect' => $this->_helper->url("manage-Filters", "filter",'', $params)));
+        };
+
+        $this->view->form = $form;
     }
 
     /*
@@ -234,7 +236,7 @@ class FilterController extends pm_Controller_Action
           $data[] = array(
             'column-1' => $filter,
             'column-2' =>
-            $this->addButton('filter', 'edit', 'Edit',
+            $this->addButton('filter', 'update', 'Edit',
                 array('filter' => $filter, 'account' => $account)) . '&nbsp&nbsp&nbsp&nbsp'.
             $this->addButton('filter', 'delete', 'Delete',
                 array('filter' => $filter, 'account' => $account), true)
@@ -260,11 +262,6 @@ class FilterController extends pm_Controller_Action
       return $list;
     }
 
-    private function startsWith($haystack, $needle)
-    {
-        return $needle === "" || strpos($haystack, $needle) === 0;
-    }
-
     /*
     *************** 
     * Method for creating link button with params and image
@@ -278,7 +275,7 @@ class FilterController extends pm_Controller_Action
       } 
       $onclick = '';
       return sprintf("<a style=\"text-decoration:none\" href=%s $onclick id=%s>%s</a>", $href, $id, $imgName);
-  }
+    }
 
 }
 ?>

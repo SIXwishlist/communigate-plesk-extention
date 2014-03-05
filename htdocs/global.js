@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('btn-addFilter').observe('click', duplicateFormFields);
         };
 
+
         function duplicateFormFields (event) {
             var htmlForData = $('dataFilter-form-row').innerHTML.replace('Rules', '');
             htmlForData = htmlForData.replace(/dataFilter/g , 'dataFilter_' + i);
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             addFilterElement.observe('click', duplicateFormFields);
             removeFilterElement.observe('click', removeFormFields);
 
-            if (i == 1) {
+            if (i == 1 || ($('btn-removeFilter_' + (i - 1)) === null)) {
                 $('btn-removeFilter').insert({after: dataFilterElement});
                 $('dataFilter-form-row_' + i).insert({after: operationFilterElement});
                 $('oprationFilter-form-row_' + i).insert({after: parameterFilterElement});
@@ -130,12 +131,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         function removeFormFields (event) {
             var elementID = this.readAttribute('id');
-            var elementToRemove = $$("[id$=" + elementID.slice(-2) + ']')
-            elementToRemove
+            var elementToRemove = $$("[id$=" + elementID.slice(-2) + ']');
+            
             for (var j = 0; j < elementToRemove.length; j++) {
-                elementToRemove[j].remove();
+                if (!elementToRemove[j].readAttribute('id').match(/[aA]ction/)) {
+                    elementToRemove[j].remove();
+                };
             };        
-            i--;
+            if (elementID.slice(-1) === (i -1).toString()) {
+                // alert('You are about to delete the last element');
+                i--;
+            } else{
+                // alert('You are NOT about to delete the last element');
+            };
         }
 
         if ($('btn-addAction') !== null) {
@@ -162,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             addActionElement.observe('click', duplicateFields);
             removeActionElement.observe('click', removeFields);
 
-            if (counter == 1) {
+            if (counter == 1 || ($('btn-removeAction_' + (counter - 1)) === null)) {
                 $('btn-removeAction').insert({after: actionFilterElement});
                 $('actionFilter-form-row_' + counter).insert({after: operationActionElement});
                 $('actionParameter-form-row_' + counter).insert({after: addActionElement});
@@ -178,13 +186,51 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         function removeFields (event) {
             var element = this.readAttribute('id');
-            var elementTo = $$("[id$=" + element.slice(-2) + ']')
-            elementTo
+            var elementTo = $$("[id$=" + element.slice(-2) + ']');
+            
             for (var p = 0; p < elementTo.length; p++) {
-                elementTo[p].remove();
+                if (elementTo[p].readAttribute('id').match(/[aA]ction/)) {
+                    elementTo[p].remove();
+                };
             };        
-            counter--;
+            if (element.slice(-1) === (counter -1).toString()) {
+                // alert('You are about to delete the last element');
+                counter--;
+            } else{
+                // alert('You are NOT about to delete the last element');
+            };
         }
 
+        if (typeof filterValues != 'undefined') {
+
+            $('name').setValue(filterValues[1]);
+            $('priority').setValue(filterValues[0]);
+
+            $('actionFilter').setValue(filterValues[3][0][0]);
+            $('actionParameter').setValue(filterValues[3][0][1]);
+            
+            for (var m = 0; m < (filterValues[3].length - 1); m++) {
+                duplicateFields();
+
+                $('actionFilter_' + (counter -1)).setValue(filterValues[3][counter -1][0]);
+                $('actionParameter_' + (counter -1)).setValue(filterValues[3][counter -1][1]);
+
+            };
+
+            $('dataFilter').setValue(filterValues[2][0][0]);
+            $('oprationFilter').setValue(filterValues[2][0][1]);
+            $('parameterFilter').setValue(filterValues[2][0][2]);
+
+            for (var p = 0; p < (filterValues[2].length - 1); p++) {
+                duplicateFormFields();
+                // console.log($('dataFilter_' + (i - 1)));
+                // console.log(filterValues[2][i - 1][1]);
+                $('dataFilter_' + (i - 1)).setValue(filterValues[2][i -1][0]);
+                $('oprationFilter_' + (i - 1)).setValue(filterValues[2][i -1][1]);
+                $('parameterFilter_' + (i - 1)).setValue(filterValues[2][i -1][2]);
+
+            };
+
+        };
     };
 });

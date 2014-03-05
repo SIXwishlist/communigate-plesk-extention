@@ -5,3 +5,7 @@
 <?php echo "<p><h4>$this->text</h4></p>"; ?>
 
 <?php echo $this->form; ?>
+
+<script type="text/javascript">
+    var filterValues = <?php echo json_encode($this->filter); ?>;
+</script>

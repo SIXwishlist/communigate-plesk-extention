@@ -1,7 +1,7 @@
 <?php 
 /*
 *************** 
-* Form class for creating Domains
+* Form class for creating Filters
 ***************
 */
 class Modules_Communigate_Form_CreateFilter extends pm_Form_Simple
@@ -14,9 +14,9 @@ class Modules_Communigate_Form_CreateFilter extends pm_Form_Simple
     */
     public function init()
     {
-        // $group = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'group', null );
+        // Options for the dropdowns
         $optionsForPriority = array('0' => 'Inactive', '1' => '1', '2' => '2', '3' => '3',
-        '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9', '10' => 'Higheset');
+            '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9', '10' => 'Higheset');
 
         $optionsForDataFilter = array('---','From', 'Sender', 'Return-Path',
             'To', 'Cc', 'Any To or Cc', 'Each To or Cc', 'Reply-To', "'From' Name",
@@ -26,12 +26,12 @@ class Modules_Communigate_Form_CreateFilter extends pm_Form_Simple
             'Source', 'Submit Address'
             );
         $optionsForOperations = array('is', 'is not', 'in', 'greater than', 'less than');
+
         $optionsForActions = array('---', 'Store in', 'Mark', 'Add Header', 'Tag Subject',
             'Reject with', 'Discard', 'Stop Processing', "Remember 'From' in",
             'Access Request', 'Accept Reply', 'Store Encrypted in', 'Copy Attachments into',
-            'Redirect To', 'Forward to', 'Mirror to', 'Reply with', 'Reply with All with',
-            'React with', ' Send IM', 'Execute URL', 'Execute', 'FingerNotify');
-
+            'Redirect to', 'Forward to', 'Mirror to', 'Reply with', 'Reply with All with',
+            'React with', 'SendIM', 'Execute URL', 'Execute', 'FingerNotify');
         $this->addElement('text', 'name', array(
             'label' => 'Filter Name',
             // 'value' => pm_Settings::get('name'),
@@ -115,7 +115,7 @@ class Modules_Communigate_Form_CreateFilter extends pm_Form_Simple
             ));
 
     }
-   
+
     public function process($group)
     {
         $cli = Modules_Communigate_Custom_Accounts::ConnectToCG();
