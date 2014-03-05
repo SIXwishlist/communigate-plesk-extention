@@ -15,6 +15,7 @@ class Modules_Communigate_Form_ServerSettings extends pm_Form_Simple
         $login = pm_Settings::get('userName');
         $password = pm_Settings::get('password');
         $webmail = pm_Settings::get('webMail');
+        $prontoDrive = pm_Settings::get('prontoDrive');
 
         // $myValidator = new Modules_Communigate_Validators_UniqueAA();
 
@@ -47,6 +48,7 @@ class Modules_Communigate_Form_ServerSettings extends pm_Form_Simple
             ));
         $this->addElement('password', 'password', array(
             'label' => 'Password',
+            'renderPassword' => true,
             'reqired' => true,
             'value' => $password,
             'validators' => array(
@@ -63,6 +65,16 @@ class Modules_Communigate_Form_ServerSettings extends pm_Form_Simple
                 // array($myValidator, true)
                 ),
             ));
+        $this->addElement('text', 'prontoDrive', array(
+            'label' => 'Link for Pronto Drive',
+            'value' => $prontoDrive,
+            'reqired' => true,
+            'validators' => array(
+                array('NotEmpty', true),
+                // array($myValidator, true)
+                ),
+            ));
+
         $this->addControlButtons(array(
             'cancelLink' => "/modules/communigate/index.php/index/index",
             ));
@@ -75,6 +87,7 @@ class Modules_Communigate_Form_ServerSettings extends pm_Form_Simple
         pm_Settings::set('userName', $this->getValue('userName'));
         pm_Settings::set('password', $this->getValue('password'));
         pm_Settings::set('webMail', $this->getValue('webmail'));
+        pm_Settings::set('prontoDrive', $this->getValue('prontoDrive'));
 
     }
 
