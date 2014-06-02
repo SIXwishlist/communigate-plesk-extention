@@ -96,26 +96,25 @@ class Modules_Communigate_Form_Account extends pm_Form_Simple
     {
         $cli = Modules_Communigate_Custom_Accounts::ConnectToCG($domain);
 
-        $defaults = $cli->GetAccountDefaults("$domain");
+        $defaults = $cli->GetAccountDefaults($domain);
         $serverDefaults = $cli->SendCommand('GETSERVERACCOUNTDEFAULTS');
         $serverDefaults = $cli->parseWords($cli->getWords());
 
 
-        if (empty($defaults)) {
+        if (empty($defaults['ServiceClasses']) &&  empty($serverDefaults["ServiceClasses"])) {
+            return array();   
+        } elseif (empty($defaults['ServiceClasses'])) {
             $sc = array_keys($serverDefaults["ServiceClasses"]);
+            return array_combine($sc, $sc);
+        } elseif (empty($serverDefaults["ServiceClasses"])) {
+            $sc = array_keys($defaults["ServiceClasses"]);
             return array_combine($sc, $sc);
         } else {
             $sc = array_keys($defaults["ServiceClasses"]);
-            return array_combine($sc, $sc);
+            $defsc = array_keys($serverDefaults["ServiceClasses"]);
+            $toRet = array_merge($sc, $defsc);
+            return array_combine($toRet, $toRet);
         }
     }
-
-
-
 }
-
-
-
-
-
 ?>
